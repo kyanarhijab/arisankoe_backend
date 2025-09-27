@@ -1,10 +1,13 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 ob_start(); // Mulai output buffering
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Content-Type: application/json");
 
 // Menangani preflight OPTIONS request
@@ -39,32 +42,32 @@ switch ($method) {
     $role     = $conn->real_escape_string($data['role']);
 
     $sql = "INSERT INTO users (username, password, name, email, role) 
-            VALUES ('$username', MD5('$password'), '$name', '$email', '$role')";
+            VALUES ('$username', '$password', '$name', '$email', '$role')";
     if ($conn->query($sql)) {
       echo json_encode(["success" => true]);
     } else {
       http_response_code(500);
       echo json_encode(["error" => $conn->error]);
     }
-    break;
+    break;  
 
   case 'PUT':
     parse_str($_SERVER['QUERY_STRING'], $query);
-    $id = intval($query['id'] ?? 0);
+    $username = $query['user'];
     $data = json_decode(file_get_contents("php://input"), true);
 
-    $username = $conn->real_escape_string($data['username']);
+    $username2 = $conn->real_escape_string($data['username']);
     $name     = $conn->real_escape_string($data['name']);
     $email    = $conn->real_escape_string($data['email']);
     $role     = $conn->real_escape_string($data['role']);
     $password = $conn->real_escape_string($data['password']);
 
     if (!empty($password)) {
-      $sql = "UPDATE users SET username='$username', password=MD5('$password'), 
-              name='$name', email='$email', role='$role' WHERE id=$id";
+      $sql = "UPDATE users SET username='$username2', password='$password', 
+              name='$name', email='$email', role='$role' WHERE username='$username'";
     } else {
-      $sql = "UPDATE users SET username='$username', 
-              name='$name', email='$email', role='$role' WHERE id=$id";
+      $sql = "UPDATE users SET username='$username2', 
+              name='$name', email='$email', role='$role' WHERE username='$username'";
     }
 
     if ($conn->query($sql)) {
@@ -77,13 +80,14 @@ switch ($method) {
 
   case 'DELETE':
     parse_str($_SERVER['QUERY_STRING'], $query);
-    $id = intval($query['id'] ?? 0);
+    $username = $query['user'];
 
-    $sql = "DELETE FROM users WHERE id=$id";
+    $sql = "DELETE FROM users WHERE username='$username'";
     if ($conn->query($sql)) {
       echo json_encode(["success" => true]);
     } else {
       http_response_code(500);
+      echo $sql;
       echo json_encode(["error" => $conn->error]);
     }
     break;
