@@ -57,6 +57,7 @@ if ($user = $result->fetch_assoc()) {
     'user' => [
       'username' => $user['username'],
       'role' => $user['role'],
+      'name' => $user['name'],
     ]
   ]);
 } else {
