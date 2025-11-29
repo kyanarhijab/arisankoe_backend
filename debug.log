@@ -3,10 +3,10 @@ Array
     [Host] => localhost
     [Connection] => keep-alive
     [sec-ch-ua-platform] => "Windows"
-    [Authorization] => Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzU5NTIyNjcxfQ.P86VEH8Gd0rTfbreIiwS0JFP6JDNNTfVE-ZbVmYZeCQ
-    [User-Agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36
+    [Authorization] => Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzY0MzU4ODY1fQ.LHXAhs-h9XHAUFHoZHJDcIwhsAeU2gwmFZt1xIQUu5Y
+    [User-Agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
     [Accept] => application/json, text/plain, */*
-    [sec-ch-ua] => "Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"
+    [sec-ch-ua] => "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"
     [sec-ch-ua-mobile] => ?0
     [Origin] => http://localhost:5173
     [Sec-Fetch-Site] => same-site

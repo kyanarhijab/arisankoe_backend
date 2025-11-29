@@ -50,19 +50,21 @@ if (!$user) {
   exit;
 }
 
-$created_by = $user['username'];
-
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$result = mysqli_query($conn, "SELECT kode, name FROM arisan_groups where status = 'active' ORDER BY name");
-$data = [];
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
 
+$sql = "SELECT username, name FROM users";
+if ($q != '') {
+  $sql .= " WHERE name LIKE '%" . mysqli_real_escape_string($conn, $q) . "%'";
+}
+
+$result = mysqli_query($conn, $sql);
+
+$data = [];
 while ($row = mysqli_fetch_assoc($result)) {
-  $data[] = [
-    'id' => $row['kode'],
-    'name' => $row['name']
-  ];
+  $data[] = $row;
 }
 
 echo json_encode($data);
