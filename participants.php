@@ -60,7 +60,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
   case 'GET':
-    $result = $conn->query("SELECT * FROM arisan_groups ORDER BY kode DESC");
+    $result = $conn->query("SELECT * FROM participants ORDER BY id DESC");
     $rows = [];
     while ($row = $result->fetch_assoc()) {
       $rows[] = $row;
@@ -72,17 +72,14 @@ switch ($method) {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!$data) $data = $_POST;
 
-    $kode             = $conn->real_escape_string($data['kode']);
-    $name             = $conn->real_escape_string($data['name']);
-    $description      = $conn->real_escape_string($data['description']);
-    $total_rounds     = $conn->real_escape_string($data['total_rounds']);
-    $amount           = $conn->real_escape_string($data['amount']);
-    $start_date       = $conn->real_escape_string($data['start_date']);
-    $status           = $conn->real_escape_string($data['status']);
-    $status           = $conn->real_escape_string($data['status']);
+    $id             = $conn->real_escape_string($data['id']);
+    $user_id        = $conn->real_escape_string($data['user_id']);
+    $group_id       = $conn->real_escape_string($data['group_id']);
+    $join_date      = $conn->real_escape_string($data['join_date']);
+    $status         = $conn->real_escape_string($data['status']);
 
-    $sql = "INSERT INTO arisan_groups (kode,name,description,total_rounds,amount,start_date,status,created_by) 
-            VALUES ('$kode', '$name', '$description', '$total_rounds', '$amount', '$start_date', '$status','$created_by')";
+    $sql = "INSERT INTO participants (id,user_id,group_id,join_date,status) 
+            VALUES ('$id', '$user_id', '$group_id', '$join_date', '$status')";
     if ($conn->query($sql)) {
       echo json_encode(["success" => true]);
     } else {
@@ -93,27 +90,23 @@ switch ($method) {
 
   case 'PUT':
     parse_str($_SERVER['QUERY_STRING'], $query);
-    $kode = $query['kode'];
+    $id = $query['id'];
     $data = json_decode(file_get_contents("php://input"), true);
 
-    $kode2          = $conn->real_escape_string($data['kode']);
-    $name           = $conn->real_escape_string($data['name']);
-    $description    = $conn->real_escape_string($data['description']);
-    $total_rounds   = $conn->real_escape_string($data['total_rounds']);
-    $amount         = $conn->real_escape_string($data['amount']);
-    $start_date     = $conn->real_escape_string($data['start_date']);
-    $status         = $conn->real_escape_string($data['status']);
+    $id2          = $conn->real_escape_string($data['id']);
+    $user_id      = $conn->real_escape_string($data['user_id']);
+    $group_id     = $conn->real_escape_string($data['group_id']);
+    $join_date    = $conn->real_escape_string($data['join_date']);
+    $status    = $conn->real_escape_string($data['status']);
 
-    
-    $sql = "UPDATE arisan_groups SET 
-            kode='$kode2', 
-            name='$name', 
-            description='$description', 
-            total_rounds='$total_rounds',
-            amount = '$amount',
+    $sql = "UPDATE participants SET  
+            user_id='$user_id', 
+            group_id='$group_id', 
+            join_date='$join_date',
+            status = '$status',
             start_date = '$start_date',
             status = '$status' 
-            WHERE kode='$kode'";
+            WHERE id='$id'";
     
 
     if ($conn->query($sql)) {
@@ -126,9 +119,9 @@ switch ($method) {
 
   case 'DELETE':
     parse_str($_SERVER['QUERY_STRING'], $query);
-    $kode = $query['kode'];
+    $id = $query['id'];
 
-    $sql = "DELETE FROM arisan_groups WHERE kode='$kode'";
+    $sql = "DELETE FROM participants WHERE id='$id'";
     if ($conn->query($sql)) {
       echo json_encode(["success" => true]);
     } else {
