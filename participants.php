@@ -60,11 +60,29 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
   case 'GET':
-    $result = $conn->query("SELECT * FROM participants ORDER BY id DESC");
+    $kode = isset($_GET['kode']) ? $conn->real_escape_string($_GET['kode']) : '';
+
+    if ($kode !== '') {
+        // Filter berdasarkan kode
+        
+        $sql =" SELECT a.id, a.user_id AS username, u.name AS nama_peserta, g.name AS nama_group , a.join_date AS join_date
+                  FROM participants a
+                JOIN users u ON u.username = a.user_id
+                JOIN arisan_groups g ON g.kode = a.group_id
+                and g.kode = '$kode' ORDER BY id DESC  ";
+    } else {
+        // Default: kosongkan hasil
+        echo json_encode([]);
+        exit;
+    }
+
+    $result = $conn->query($sql);
+
     $rows = [];
     while ($row = $result->fetch_assoc()) {
-      $rows[] = $row;
+        $rows[] = $row;
     }
+
     echo json_encode($rows);
     break;
 
